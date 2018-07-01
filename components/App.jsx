@@ -1,3 +1,4 @@
+// Playing with React
 import React from 'react';
 import ChannelSection from './channels/ChannelSection.jsx';
 import UserSection from './users/UserSection.jsx';
