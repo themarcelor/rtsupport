@@ -9,7 +9,7 @@ class User extends React.Component {
       render() {
             const user = this.props.user;
 	    return (
-	          <li className={active}>
+	          <li>
 	            <a onClick={this.onClick.bind(this)}>
 		      {this.props.user.name}
 		    </a>

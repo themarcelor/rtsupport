@@ -22,8 +22,8 @@ class App extends React.Component {
 	});
 	//TODO: send to the server
       }
-      addUser(name) {
-        let users = this.state.channels;
+      setUserName(name) {
+        let users = this.state.users;
 	users.push({id: users.length, name});
 	this.setState({
 	  users: users
@@ -32,7 +32,10 @@ class App extends React.Component {
       }
       sendMessage(msg) {
         let messages = this.state.messages;
-	messages.push({id: messages.length, msg});
+	let users = this.state.users;
+	let createdAt = new Date;
+	let author = users.length > 0 ? users[0].name : 'anonymous';
+	messages.push({id: messages.length, msg, createdAt, author});
 	this.setState({
 	  messages: messages
 	});
@@ -56,11 +59,12 @@ class App extends React.Component {
 	    />
             <UserSection
 	      users={this.state.users}
-	      addUser={this.addUser.bind(this)}
+	      setUserName={this.setUserName.bind(this)}
 	    />
 	   </div>
 	   <MessageSection
 	     messages={this.state.messages}
+	     activeChannel={this.state.activeChannel}
 	     sendMessage={this.sendMessage.bind(this)}
 	   />
 	  </div>

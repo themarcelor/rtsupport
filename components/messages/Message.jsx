@@ -1,4 +1,5 @@
 import React from 'react';
+import fecha from 'fecha';
 
 class Message extends React.Component {
       onClick(e) {
@@ -7,9 +8,14 @@ class Message extends React.Component {
       }
       render() {
             const message = this.props.message;
+	    const createdAt = fecha.format(message.createdAt, 'HH:mm:ss MM/DD/YYYY');
 	    return (
-	          <li>
-		      {this.props.message.messageData}
+	          <li className='message'>
+		    <div className='author'>
+		      <strong>{message.author}</strong>
+		      <i className='timestamp'>{createdAt}</i>
+		    </div>
+		    <div className='body'>{message.msg}</div>
 		  </li>
 	    )
       }
