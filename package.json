@@ -11,12 +11,18 @@
   "license": "ISC",
   "devDependencies": {
     "babel-loader": "^5.3.3",
+    "bufferutil": "^3.0.0",
     "fecha": "^2.3.3",
+    "net": "^1.0.2",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-scripts": "^1.1.4",
-    "webpack": "^2.2.0",
-    "webpack-dev-server": "^1.12.1"
+    "tls": "0.0.1",
+    "utf-8-validate": "^4.0.2",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.1",
+    "ws": "^5.2.1",
+    "wscat": "^2.2.1"
   },
   "dependencies": {
     "react-scripts": "^1.1.4"

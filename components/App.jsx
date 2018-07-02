@@ -4,6 +4,9 @@ import ChannelSection from './channels/ChannelSection.jsx';
 import UserSection from './users/UserSection.jsx';
 import MessageSection from './messages/MessageSection.jsx';
 
+import Websocket from 'ws';
+//import WebSocketClient from 'websocket';
+
 class App extends React.Component {
       constructor(props) {
         super(props);
@@ -14,14 +17,56 @@ class App extends React.Component {
 	  messages: []
 	};
       }
-      addChannel(name) {
+
+      /* interaction with server-side starts here */
+      componentDidMount() {
+        var ws = this.ws = new WebSocket('wss://echo.websocket.org/');
+        //let ws = new Websocket('ws://echo.websocket.org');
+	ws.onmessage = this.message.bind(this);
+	ws.onopen = this.open.bind(this);
+	ws.onclose = this.close.bind(this);
+      }
+      message(e) {
+        console.log('received msg');
+        const event = JSON.parse(e.data);
+	if(event.name === 'channel add') {
+ 	  this.newChannel(event.data);
+	}
+      }
+      open(e) {
+        console.log('connected to web socket!');
+        this.setState({ connected: true});
+      }
+      close(e) {
+        this.setState({ connected: false});      
+      }
+      newChannel(channel) {
         let channels = this.state.channels;
-	channels.push({id: channels.length, name});
+	channels.push(channel);
 	this.setState({
 	  channels: channels
 	});
-	//TODO: send to the server
       }
+      addChannel(name) {
+        let channels = this.state.channels;
+	//TODO: send to the server
+	let msg = {
+	  name: 'channel add',
+	  data: {
+	    id: channels.length,
+	    name
+	  }
+	};
+	console.log('sending web socket msg now');
+	this.ws.send(JSON.stringify(msg));
+      }
+      setChannel(activeChannel) {
+        this.setState({
+	  activeChannel: activeChannel
+	});
+	// TODO: Get channels messages
+      }
+      
       setUserName(name) {
         let users = this.state.users;
 	users.push({id: users.length, name});
@@ -40,12 +85,6 @@ class App extends React.Component {
 	  messages: messages
 	});
 	//TODO: send to the server
-      }
-      setChannel(activeChannel) {
-        this.setState({
-	  activeChannel: activeChannel
-	});
-	// TODO: Get channels messages
       }
       render() {
         return (
